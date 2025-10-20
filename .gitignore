@@ -1,0 +1,7 @@
+.venv
+*.m4a
+*.mov
+*.mp4
+*.mp3
+.DS_Store
+

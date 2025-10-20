@@ -1,0 +1,389 @@
+{
+  "audio_path": "/Users/ahanarai/Documents/upskill/onesub/Ranganatha Layout.m4a",
+  "model_name": "base",
+  "language": null,
+  "segments": [
+    {
+      "index": 0,
+      "start": 0.0,
+      "end": 5.5,
+      "text": "This is a sample that I have created for my application to show you the difference between",
+      "words": [
+        {
+          "index": 0,
+          "text": "This",
+          "start": 0.0,
+          "end": 0.74,
+          "probability": 0.805753231048584
+        },
+        {
+          "index": 1,
+          "text": "is",
+          "start": 0.74,
+          "end": 0.98,
+          "probability": 0.9924185276031494
+        },
+        {
+          "index": 2,
+          "text": "a",
+          "start": 0.98,
+          "end": 1.14,
+          "probability": 0.8832301497459412
+        },
+        {
+          "index": 3,
+          "text": "sample",
+          "start": 1.14,
+          "end": 1.48,
+          "probability": 0.996461808681488
+        },
+        {
+          "index": 4,
+          "text": "that",
+          "start": 1.48,
+          "end": 1.78,
+          "probability": 0.9023519158363342
+        },
+        {
+          "index": 5,
+          "text": "I",
+          "start": 1.78,
+          "end": 1.94,
+          "probability": 0.845445454120636
+        },
+        {
+          "index": 6,
+          "text": "have",
+          "start": 1.94,
+          "end": 2.02,
+          "probability": 0.5979655981063843
+        },
+        {
+          "index": 7,
+          "text": "created",
+          "start": 2.02,
+          "end": 2.44,
+          "probability": 0.9976804256439209
+        },
+        {
+          "index": 8,
+          "text": "for",
+          "start": 2.44,
+          "end": 3.12,
+          "probability": 0.9691717624664307
+        },
+        {
+          "index": 9,
+          "text": "my",
+          "start": 3.12,
+          "end": 3.48,
+          "probability": 0.9888972640037537
+        },
+        {
+          "index": 10,
+          "text": "application",
+          "start": 3.48,
+          "end": 4.08,
+          "probability": 0.9880090951919556
+        },
+        {
+          "index": 11,
+          "text": "to",
+          "start": 4.08,
+          "end": 4.4,
+          "probability": 0.733677864074707
+        },
+        {
+          "index": 12,
+          "text": "show",
+          "start": 4.4,
+          "end": 4.56,
+          "probability": 0.9973340034484863
+        },
+        {
+          "index": 13,
+          "text": "you",
+          "start": 4.56,
+          "end": 4.68,
+          "probability": 0.9862534403800964
+        },
+        {
+          "index": 14,
+          "text": "the",
+          "start": 4.68,
+          "end": 4.78,
+          "probability": 0.9880191683769226
+        },
+        {
+          "index": 15,
+          "text": "difference",
+          "start": 4.78,
+          "end": 5.12,
+          "probability": 0.9903562068939209
+        },
+        {
+          "index": 16,
+          "text": "between",
+          "start": 5.12,
+          "end": 5.5,
+          "probability": 0.9977678060531616
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "start": 5.5,
+      "end": 10.3,
+      "text": "the Instagram one and the one that I made myself using codecs.",
+      "words": [
+        {
+          "index": 17,
+          "text": "the",
+          "start": 5.5,
+          "end": 5.76,
+          "probability": 0.9784966707229614
+        },
+        {
+          "index": 18,
+          "text": "Instagram",
+          "start": 5.76,
+          "end": 6.32,
+          "probability": 0.7785042524337769
+        },
+        {
+          "index": 19,
+          "text": "one",
+          "start": 6.32,
+          "end": 6.66,
+          "probability": 0.8502328991889954
+        },
+        {
+          "index": 20,
+          "text": "and",
+          "start": 6.66,
+          "end": 7.26,
+          "probability": 0.9664644598960876
+        },
+        {
+          "index": 21,
+          "text": "the",
+          "start": 7.26,
+          "end": 7.64,
+          "probability": 0.9696035981178284
+        },
+        {
+          "index": 22,
+          "text": "one",
+          "start": 7.64,
+          "end": 8.1,
+          "probability": 0.9916805624961853
+        },
+        {
+          "index": 23,
+          "text": "that",
+          "start": 8.1,
+          "end": 8.34,
+          "probability": 0.9806205630302429
+        },
+        {
+          "index": 24,
+          "text": "I",
+          "start": 8.34,
+          "end": 8.68,
+          "probability": 0.9710496068000793
+        },
+        {
+          "index": 25,
+          "text": "made",
+          "start": 8.68,
+          "end": 8.92,
+          "probability": 0.9899312257766724
+        },
+        {
+          "index": 26,
+          "text": "myself",
+          "start": 8.92,
+          "end": 9.3,
+          "probability": 0.9922751784324646
+        },
+        {
+          "index": 27,
+          "text": "using",
+          "start": 9.3,
+          "end": 9.74,
+          "probability": 0.9954061508178711
+        },
+        {
+          "index": 28,
+          "text": "codecs.",
+          "start": 9.74,
+          "end": 10.3,
+          "probability": 0.42977702617645264
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "start": 11.04,
+      "end": 16.62,
+      "text": "So this is codecs and I have added a new type of font for whenever I am stressing on",
+      "words": [
+        {
+          "index": 29,
+          "text": "So",
+          "start": 11.04,
+          "end": 11.18,
+          "probability": 0.8797051310539246
+        },
+        {
+          "index": 30,
+          "text": "this",
+          "start": 11.18,
+          "end": 11.4,
+          "probability": 0.8586481809616089
+        },
+        {
+          "index": 31,
+          "text": "is",
+          "start": 11.4,
+          "end": 11.58,
+          "probability": 0.9920278191566467
+        },
+        {
+          "index": 32,
+          "text": "codecs",
+          "start": 11.58,
+          "end": 12.12,
+          "probability": 0.8554470837116241
+        },
+        {
+          "index": 33,
+          "text": "and",
+          "start": 12.12,
+          "end": 12.3,
+          "probability": 0.9071850776672363
+        },
+        {
+          "index": 34,
+          "text": "I",
+          "start": 12.3,
+          "end": 12.44,
+          "probability": 0.9739489555358887
+        },
+        {
+          "index": 35,
+          "text": "have",
+          "start": 12.44,
+          "end": 12.56,
+          "probability": 0.5284489393234253
+        },
+        {
+          "index": 36,
+          "text": "added",
+          "start": 12.56,
+          "end": 12.82,
+          "probability": 0.994708776473999
+        },
+        {
+          "index": 37,
+          "text": "a",
+          "start": 12.82,
+          "end": 13.2,
+          "probability": 0.9838935136795044
+        },
+        {
+          "index": 38,
+          "text": "new",
+          "start": 13.2,
+          "end": 13.58,
+          "probability": 0.9976044297218323
+        },
+        {
+          "index": 39,
+          "text": "type",
+          "start": 13.58,
+          "end": 13.94,
+          "probability": 0.9758875966072083
+        },
+        {
+          "index": 40,
+          "text": "of",
+          "start": 13.94,
+          "end": 14.18,
+          "probability": 0.9978030323982239
+        },
+        {
+          "index": 41,
+          "text": "font",
+          "start": 14.18,
+          "end": 14.54,
+          "probability": 0.9897513389587402
+        },
+        {
+          "index": 42,
+          "text": "for",
+          "start": 14.54,
+          "end": 14.88,
+          "probability": 0.9745917916297913
+        },
+        {
+          "index": 43,
+          "text": "whenever",
+          "start": 14.88,
+          "end": 15.2,
+          "probability": 0.9577748775482178
+        },
+        {
+          "index": 44,
+          "text": "I",
+          "start": 15.2,
+          "end": 15.46,
+          "probability": 0.9741859436035156
+        },
+        {
+          "index": 45,
+          "text": "am",
+          "start": 15.46,
+          "end": 15.58,
+          "probability": 0.4246319830417633
+        },
+        {
+          "index": 46,
+          "text": "stressing",
+          "start": 15.58,
+          "end": 16.2,
+          "probability": 0.9754602313041687
+        },
+        {
+          "index": 47,
+          "text": "on",
+          "start": 16.2,
+          "end": 16.62,
+          "probability": 0.9843393564224243
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "start": 16.62,
+      "end": 17.18,
+      "text": "the words.",
+      "words": [
+        {
+          "index": 48,
+          "text": "the",
+          "start": 16.62,
+          "end": 16.8,
+          "probability": 0.992786705493927
+        },
+        {
+          "index": 49,
+          "text": "words.",
+          "start": 16.8,
+          "end": 17.18,
+          "probability": 0.9558998346328735
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "onesub"
+version = "0.1.0"
+description = "Two-step workflow for generating stylised subtitles from audio."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "openai-whisper",
+  "soundfile",
+  "numpy",
+  "PyYAML"
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.scripts]
+onesub-prepare = "onesub.tasks.prepare:main"
+onesub-render = "onesub.tasks.render:main"
+

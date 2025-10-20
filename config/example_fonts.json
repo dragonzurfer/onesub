@@ -1,0 +1,32 @@
+{
+  "default_font": "Arial",
+  "size_mapping": {
+    "min": 50,
+    "max": 90
+  },
+  "font_bands": [
+    {
+      "min_size": 50,
+      "max_size": 70,
+      "font": "Helvetica"
+    },
+    {
+      "min_size": 71,
+      "max_size": 90,
+      "font": "Editor's Note Light"
+    }
+  ],
+  "outline": 2,
+  "shadow": 1,
+  "line_spacing": 4,
+  "alignment": 7,
+  "placements_path": "config/example_placements.json",
+  "display": {
+    "mode": "fixed_count",
+    "words_per_caption": 5,
+    "line_word_limits": [2, 3],
+    "reveal_mode": "per_word",
+    "rolling_window": 5,
+    "interval_seconds": 3.0
+  }
+}

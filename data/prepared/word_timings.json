@@ -1,0 +1,457 @@
+{
+  "audio_path": "/Users/ahanarai/Documents/upskill/onesub/Ranganatha Layout.m4a",
+  "model_name": "base",
+  "language": null,
+  "words": [
+    {
+      "index": 0,
+      "segment_index": 0,
+      "text": "This",
+      "start": 0.0,
+      "end": 0.74,
+      "duration": 0.74,
+      "probability": 0.805753231048584
+    },
+    {
+      "index": 1,
+      "segment_index": 0,
+      "text": "is",
+      "start": 0.74,
+      "end": 0.98,
+      "duration": 0.24,
+      "probability": 0.9924185276031494
+    },
+    {
+      "index": 2,
+      "segment_index": 0,
+      "text": "a",
+      "start": 0.98,
+      "end": 1.14,
+      "duration": 0.15999999999999992,
+      "probability": 0.8832301497459412
+    },
+    {
+      "index": 3,
+      "segment_index": 0,
+      "text": "sample",
+      "start": 1.14,
+      "end": 1.48,
+      "duration": 0.3400000000000001,
+      "probability": 0.996461808681488
+    },
+    {
+      "index": 4,
+      "segment_index": 0,
+      "text": "that",
+      "start": 1.48,
+      "end": 1.78,
+      "duration": 0.30000000000000004,
+      "probability": 0.9023519158363342
+    },
+    {
+      "index": 5,
+      "segment_index": 0,
+      "text": "I",
+      "start": 1.78,
+      "end": 1.94,
+      "duration": 0.15999999999999992,
+      "probability": 0.845445454120636
+    },
+    {
+      "index": 6,
+      "segment_index": 0,
+      "text": "have",
+      "start": 1.94,
+      "end": 2.02,
+      "duration": 0.08000000000000007,
+      "probability": 0.5979655981063843
+    },
+    {
+      "index": 7,
+      "segment_index": 0,
+      "text": "created",
+      "start": 2.02,
+      "end": 2.44,
+      "duration": 0.41999999999999993,
+      "probability": 0.9976804256439209
+    },
+    {
+      "index": 8,
+      "segment_index": 0,
+      "text": "for",
+      "start": 2.44,
+      "end": 3.12,
+      "duration": 0.6800000000000002,
+      "probability": 0.9691717624664307
+    },
+    {
+      "index": 9,
+      "segment_index": 0,
+      "text": "my",
+      "start": 3.12,
+      "end": 3.48,
+      "duration": 0.3599999999999999,
+      "probability": 0.9888972640037537
+    },
+    {
+      "index": 10,
+      "segment_index": 0,
+      "text": "application",
+      "start": 3.48,
+      "end": 4.08,
+      "duration": 0.6000000000000001,
+      "probability": 0.9880090951919556
+    },
+    {
+      "index": 11,
+      "segment_index": 0,
+      "text": "to",
+      "start": 4.08,
+      "end": 4.4,
+      "duration": 0.3200000000000003,
+      "probability": 0.733677864074707
+    },
+    {
+      "index": 12,
+      "segment_index": 0,
+      "text": "show",
+      "start": 4.4,
+      "end": 4.56,
+      "duration": 0.15999999999999925,
+      "probability": 0.9973340034484863
+    },
+    {
+      "index": 13,
+      "segment_index": 0,
+      "text": "you",
+      "start": 4.56,
+      "end": 4.68,
+      "duration": 0.1200000000000001,
+      "probability": 0.9862534403800964
+    },
+    {
+      "index": 14,
+      "segment_index": 0,
+      "text": "the",
+      "start": 4.68,
+      "end": 4.78,
+      "duration": 0.10000000000000053,
+      "probability": 0.9880191683769226
+    },
+    {
+      "index": 15,
+      "segment_index": 0,
+      "text": "difference",
+      "start": 4.78,
+      "end": 5.12,
+      "duration": 0.33999999999999986,
+      "probability": 0.9903562068939209
+    },
+    {
+      "index": 16,
+      "segment_index": 0,
+      "text": "between",
+      "start": 5.12,
+      "end": 5.5,
+      "duration": 0.3799999999999999,
+      "probability": 0.9977678060531616
+    },
+    {
+      "index": 17,
+      "segment_index": 1,
+      "text": "the",
+      "start": 5.5,
+      "end": 5.76,
+      "duration": 0.2599999999999998,
+      "probability": 0.9784966707229614
+    },
+    {
+      "index": 18,
+      "segment_index": 1,
+      "text": "Instagram",
+      "start": 5.76,
+      "end": 6.32,
+      "duration": 0.5600000000000005,
+      "probability": 0.7785042524337769
+    },
+    {
+      "index": 19,
+      "segment_index": 1,
+      "text": "one",
+      "start": 6.32,
+      "end": 6.66,
+      "duration": 0.33999999999999986,
+      "probability": 0.8502328991889954
+    },
+    {
+      "index": 20,
+      "segment_index": 1,
+      "text": "and",
+      "start": 6.66,
+      "end": 7.26,
+      "duration": 0.5999999999999996,
+      "probability": 0.9664644598960876
+    },
+    {
+      "index": 21,
+      "segment_index": 1,
+      "text": "the",
+      "start": 7.26,
+      "end": 7.64,
+      "duration": 0.3799999999999999,
+      "probability": 0.9696035981178284
+    },
+    {
+      "index": 22,
+      "segment_index": 1,
+      "text": "one",
+      "start": 7.64,
+      "end": 8.1,
+      "duration": 0.45999999999999996,
+      "probability": 0.9916805624961853
+    },
+    {
+      "index": 23,
+      "segment_index": 1,
+      "text": "that",
+      "start": 8.1,
+      "end": 8.34,
+      "duration": 0.2400000000000002,
+      "probability": 0.9806205630302429
+    },
+    {
+      "index": 24,
+      "segment_index": 1,
+      "text": "I",
+      "start": 8.34,
+      "end": 8.68,
+      "duration": 0.33999999999999986,
+      "probability": 0.9710496068000793
+    },
+    {
+      "index": 25,
+      "segment_index": 1,
+      "text": "made",
+      "start": 8.68,
+      "end": 8.92,
+      "duration": 0.2400000000000002,
+      "probability": 0.9899312257766724
+    },
+    {
+      "index": 26,
+      "segment_index": 1,
+      "text": "myself",
+      "start": 8.92,
+      "end": 9.3,
+      "duration": 0.3800000000000008,
+      "probability": 0.9922751784324646
+    },
+    {
+      "index": 27,
+      "segment_index": 1,
+      "text": "using",
+      "start": 9.3,
+      "end": 9.74,
+      "duration": 0.4399999999999995,
+      "probability": 0.9954061508178711
+    },
+    {
+      "index": 28,
+      "segment_index": 1,
+      "text": "codecs.",
+      "start": 9.74,
+      "end": 10.3,
+      "duration": 0.5600000000000005,
+      "probability": 0.42977702617645264
+    },
+    {
+      "index": 29,
+      "segment_index": 2,
+      "text": "So",
+      "start": 11.04,
+      "end": 11.18,
+      "duration": 0.14000000000000057,
+      "probability": 0.8797051310539246
+    },
+    {
+      "index": 30,
+      "segment_index": 2,
+      "text": "this",
+      "start": 11.18,
+      "end": 11.4,
+      "duration": 0.22000000000000064,
+      "probability": 0.8586481809616089
+    },
+    {
+      "index": 31,
+      "segment_index": 2,
+      "text": "is",
+      "start": 11.4,
+      "end": 11.58,
+      "duration": 0.17999999999999972,
+      "probability": 0.9920278191566467
+    },
+    {
+      "index": 32,
+      "segment_index": 2,
+      "text": "codecs",
+      "start": 11.58,
+      "end": 12.12,
+      "duration": 0.5399999999999991,
+      "probability": 0.8554470837116241
+    },
+    {
+      "index": 33,
+      "segment_index": 2,
+      "text": "and",
+      "start": 12.12,
+      "end": 12.3,
+      "duration": 0.1800000000000015,
+      "probability": 0.9071850776672363
+    },
+    {
+      "index": 34,
+      "segment_index": 2,
+      "text": "I",
+      "start": 12.3,
+      "end": 12.44,
+      "duration": 0.1399999999999988,
+      "probability": 0.9739489555358887
+    },
+    {
+      "index": 35,
+      "segment_index": 2,
+      "text": "have",
+      "start": 12.44,
+      "end": 12.56,
+      "duration": 0.120000000000001,
+      "probability": 0.5284489393234253
+    },
+    {
+      "index": 36,
+      "segment_index": 2,
+      "text": "added",
+      "start": 12.56,
+      "end": 12.82,
+      "duration": 0.2599999999999998,
+      "probability": 0.994708776473999
+    },
+    {
+      "index": 37,
+      "segment_index": 2,
+      "text": "a",
+      "start": 12.82,
+      "end": 13.2,
+      "duration": 0.379999999999999,
+      "probability": 0.9838935136795044
+    },
+    {
+      "index": 38,
+      "segment_index": 2,
+      "text": "new",
+      "start": 13.2,
+      "end": 13.58,
+      "duration": 0.3800000000000008,
+      "probability": 0.9976044297218323
+    },
+    {
+      "index": 39,
+      "segment_index": 2,
+      "text": "type",
+      "start": 13.58,
+      "end": 13.94,
+      "duration": 0.35999999999999943,
+      "probability": 0.9758875966072083
+    },
+    {
+      "index": 40,
+      "segment_index": 2,
+      "text": "of",
+      "start": 13.94,
+      "end": 14.18,
+      "duration": 0.2400000000000002,
+      "probability": 0.9978030323982239
+    },
+    {
+      "index": 41,
+      "segment_index": 2,
+      "text": "font",
+      "start": 14.18,
+      "end": 14.54,
+      "duration": 0.35999999999999943,
+      "probability": 0.9897513389587402
+    },
+    {
+      "index": 42,
+      "segment_index": 2,
+      "text": "for",
+      "start": 14.54,
+      "end": 14.88,
+      "duration": 0.34000000000000163,
+      "probability": 0.9745917916297913
+    },
+    {
+      "index": 43,
+      "segment_index": 2,
+      "text": "whenever",
+      "start": 14.88,
+      "end": 15.2,
+      "duration": 0.3199999999999985,
+      "probability": 0.9577748775482178
+    },
+    {
+      "index": 44,
+      "segment_index": 2,
+      "text": "I",
+      "start": 15.2,
+      "end": 15.46,
+      "duration": 0.26000000000000156,
+      "probability": 0.9741859436035156
+    },
+    {
+      "index": 45,
+      "segment_index": 2,
+      "text": "am",
+      "start": 15.46,
+      "end": 15.58,
+      "duration": 0.11999999999999922,
+      "probability": 0.4246319830417633
+    },
+    {
+      "index": 46,
+      "segment_index": 2,
+      "text": "stressing",
+      "start": 15.58,
+      "end": 16.2,
+      "duration": 0.6199999999999992,
+      "probability": 0.9754602313041687
+    },
+    {
+      "index": 47,
+      "segment_index": 2,
+      "text": "on",
+      "start": 16.2,
+      "end": 16.62,
+      "duration": 0.4200000000000017,
+      "probability": 0.9843393564224243
+    },
+    {
+      "index": 48,
+      "segment_index": 3,
+      "text": "the",
+      "start": 16.62,
+      "end": 16.8,
+      "duration": 0.17999999999999972,
+      "probability": 0.992786705493927
+    },
+    {
+      "index": 49,
+      "segment_index": 3,
+      "text": "words.",
+      "start": 16.8,
+      "end": 17.18,
+      "duration": 0.379999999999999,
+      "probability": 0.9558998346328735
+    }
+  ]
+}

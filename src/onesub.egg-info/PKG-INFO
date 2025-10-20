@@ -1,0 +1,87 @@
+Metadata-Version: 2.4
+Name: onesub
+Version: 0.1.0
+Summary: Two-step workflow for generating stylised subtitles from audio.
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: openai-whisper
+Requires-Dist: soundfile
+Requires-Dist: numpy
+Requires-Dist: PyYAML
+
+# OneSub Subtitle Workflow
+
+Generate stylised subtitles from `.m4a` / `.mp3` audio and burn them into `.mov` / `.mp4` videos in two repeatable steps.
+
+## Prerequisites
+
+- Python 3.9+
+- `ffmpeg` available on your `PATH`
+- Optional: GPU + CUDA for faster Whisper inference
+
+## Setup
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -e .
+```
+
+The editable install exposes two CLI entry points that wrap the modular code under `src/onesub`.
+
+## Step 1 – Generate Captions & Audio Analysis
+
+This step runs Whisper once, stores the transcript, and measures word-level loudness.
+
+```bash
+onesub-prepare sample\ audio.m4a -o data/prepared --model base
+```
+
+Outputs:
+
+- `data/prepared/captions.json`
+- `data/prepared/audio_analysis.json`
+
+If you need to re-style or re-render later, you can recycle these files without re-running Whisper.
+
+### Common options
+
+- `--model`: Whisper model size (`tiny`, `base`, `small`, `medium`, `large`)
+- `--language`: enforce the language code
+- `--device`: `cuda`, `cpu`, etc.
+
+## Step 2 – Render Subtitles Onto Video
+
+```bash
+onesub-render "sample recording.mov" \
+  --captions data/prepared/captions.json \
+  --analysis data/prepared/audio_analysis.json \
+  --config config/example_fonts.json \
+  --output data/rendered/output.mp4
+```
+
+This step loads the cached JSON files, builds an `.ass` subtitle script that scales each word by loudness, and calls `ffmpeg` to burn the subtitles into the video. The generated `.ass` file is stored next to the output video so you can tweak and re-use it.
+
+### Styling configuration
+
+`config/example_fonts.json` demonstrates the available options:
+
+- `size_mapping.min` / `size_mapping.max`: bounds for loudness-driven font sizes
+- `font_bands`: optional overrides that map size ranges to specific fonts
+- `default_font`: fallback font if a range does not match
+- `outline`, `shadow`, `line_spacing`: extra style controls passed to the ASS style
+
+You can supply either JSON or YAML for the render configuration.
+
+## Testing the render stage
+
+Because transcription is slow, the render stage is designed for quick iteration. You can adapt the JSON fixtures produced during Step 1 to run local tests against `onesub.rendering.build_ass_script` or `onesub.tasks.render.run`.
+
+## Project layout
+
+- `src/onesub/transcription.py`: Whisper integration and transcript parsing
+- `src/onesub/audio_analysis.py`: RMS/peak extraction per word
+- `src/onesub/rendering.py`: ASS subtitle generation and `ffmpeg` integration
+- `src/onesub/tasks/prepare.py` / `render.py`: CLI entry points for the two-step workflow
+

@@ -1,0 +1,64 @@
+[Script Info]
+ScriptType: v4.00+
+WrapStyle: 0
+Collisions: Normal
+PlayResX: 1920
+PlayResY: 1080
+Timer: 100.0000
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Arial,50,&H00FFFFFF,&H000000FF,&H00000000,&H64000000,-1,0,0,0,100,100,0,0,1,2,1,7,80,80,80,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:00.74,Default,,0,0,0,,{\pos(672,378)}{\fnEditor's Note Light\fs90}This
+Dialogue: 0,0:00:00.74,0:00:00.98,Default,,0,0,0,,{\pos(672,378)}{\fnEditor's Note Light\fs90}This {\fnEditor's Note Light\fs87}is
+Dialogue: 0,0:00:00.98,0:00:01.14,Default,,0,0,0,,{\pos(672,378)}{\fnEditor's Note Light\fs90}This {\fnEditor's Note Light\fs87}is\N{\fnHelvetica\fs56}a
+Dialogue: 0,0:00:01.14,0:00:01.48,Default,,0,0,0,,{\pos(672,378)}{\fnEditor's Note Light\fs90}This {\fnEditor's Note Light\fs87}is\N{\fnHelvetica\fs56}a {\fnHelvetica\fs50}sample
+Dialogue: 0,0:00:01.48,0:00:01.78,Default,,0,0,0,,{\pos(672,378)}{\fnEditor's Note Light\fs90}This {\fnEditor's Note Light\fs87}is\N{\fnHelvetica\fs56}a {\fnHelvetica\fs50}sample {\fnHelvetica\fs50}that
+Dialogue: 0,0:00:01.78,0:00:01.94,Default,,0,0,0,,{\pos(672,378)}{\fnEditor's Note Light\fs90}I
+Dialogue: 0,0:00:01.94,0:00:02.02,Default,,0,0,0,,{\pos(672,378)}{\fnEditor's Note Light\fs90}I {\fnHelvetica\fs63}have
+Dialogue: 0,0:00:02.02,0:00:02.44,Default,,0,0,0,,{\pos(672,378)}{\fnEditor's Note Light\fs90}I {\fnHelvetica\fs63}have\N{\fnHelvetica\fs50}created
+Dialogue: 0,0:00:02.44,0:00:03.12,Default,,0,0,0,,{\pos(672,378)}{\fnEditor's Note Light\fs90}I {\fnHelvetica\fs63}have\N{\fnHelvetica\fs50}created {\fnHelvetica\fs50}for
+Dialogue: 0,0:00:03.12,0:00:03.48,Default,,0,0,0,,{\pos(672,378)}{\fnEditor's Note Light\fs90}I {\fnHelvetica\fs63}have\N{\fnHelvetica\fs50}created {\fnHelvetica\fs50}for\N{\fnEditor's Note Light\fs80}my
+Dialogue: 0,0:00:03.48,0:00:04.08,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs57}application
+Dialogue: 0,0:00:04.08,0:00:04.40,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs57}application {\fnHelvetica\fs50}to
+Dialogue: 0,0:00:04.40,0:00:04.56,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs57}application {\fnHelvetica\fs50}to\N{\fnEditor's Note Light\fs75}show
+Dialogue: 0,0:00:04.56,0:00:04.68,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs57}application {\fnHelvetica\fs50}to\N{\fnEditor's Note Light\fs75}show\N{\fnEditor's Note Light\fs90}you
+Dialogue: 0,0:00:04.68,0:00:04.78,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs57}application {\fnHelvetica\fs50}to\N{\fnEditor's Note Light\fs75}show\N{\fnEditor's Note Light\fs90}you {\fnEditor's Note Light\fs86}the
+Dialogue: 0,0:00:04.78,0:00:05.12,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs50}difference
+Dialogue: 0,0:00:05.12,0:00:05.50,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs50}difference\N{\fnHelvetica\fs60}between
+Dialogue: 0,0:00:05.50,0:00:05.76,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs50}difference\N{\fnHelvetica\fs60}between\N{\fnEditor's Note Light\fs76}the
+Dialogue: 0,0:00:05.76,0:00:06.32,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs50}difference\N{\fnHelvetica\fs60}between\N{\fnEditor's Note Light\fs76}the\N{\fnEditor's Note Light\fs90}Instagram
+Dialogue: 0,0:00:06.32,0:00:06.66,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs50}difference\N{\fnHelvetica\fs60}between\N{\fnEditor's Note Light\fs76}the\N{\fnEditor's Note Light\fs90}Instagram {\fnHelvetica\fs68}one
+Dialogue: 0,0:00:06.66,0:00:07.26,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs59}and
+Dialogue: 0,0:00:07.26,0:00:07.64,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs59}and\N{\fnEditor's Note Light\fs74}the
+Dialogue: 0,0:00:07.64,0:00:08.10,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs59}and\N{\fnEditor's Note Light\fs74}the\N{\fnEditor's Note Light\fs75}one
+Dialogue: 0,0:00:08.10,0:00:08.34,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs59}and\N{\fnEditor's Note Light\fs74}the\N{\fnEditor's Note Light\fs75}one\N{\fnEditor's Note Light\fs90}that
+Dialogue: 0,0:00:08.34,0:00:08.68,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs59}and\N{\fnEditor's Note Light\fs74}the\N{\fnEditor's Note Light\fs75}one\N{\fnEditor's Note Light\fs90}that {\fnHelvetica\fs50}I
+Dialogue: 0,0:00:08.68,0:00:08.92,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs69}made
+Dialogue: 0,0:00:08.92,0:00:09.30,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs69}made {\fnHelvetica\fs50}myself
+Dialogue: 0,0:00:09.30,0:00:09.74,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs69}made {\fnHelvetica\fs50}myself\N{\fnEditor's Note Light\fs75}using
+Dialogue: 0,0:00:09.74,0:00:11.04,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs69}made {\fnHelvetica\fs50}myself\N{\fnEditor's Note Light\fs75}using {\fnHelvetica\fs69}codecs.
+Dialogue: 0,0:00:11.04,0:00:11.18,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs69}made {\fnHelvetica\fs50}myself\N{\fnEditor's Note Light\fs75}using {\fnHelvetica\fs69}codecs.\N{\fnEditor's Note Light\fs90}So
+Dialogue: 0,0:00:11.18,0:00:11.40,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs63}this
+Dialogue: 0,0:00:11.40,0:00:11.58,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs63}this\N{\fnEditor's Note Light\fs81}is
+Dialogue: 0,0:00:11.58,0:00:12.12,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs63}this\N{\fnEditor's Note Light\fs81}is\N{\fnEditor's Note Light\fs90}codecs
+Dialogue: 0,0:00:12.12,0:00:12.30,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs63}this\N{\fnEditor's Note Light\fs81}is\N{\fnEditor's Note Light\fs90}codecs {\fnHelvetica\fs50}and
+Dialogue: 0,0:00:12.30,0:00:12.44,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs63}this\N{\fnEditor's Note Light\fs81}is\N{\fnEditor's Note Light\fs90}codecs {\fnHelvetica\fs50}and {\fnHelvetica\fs64}I
+Dialogue: 0,0:00:12.44,0:00:12.56,Default,,0,0,0,,{\pos(672,378)}{\fnEditor's Note Light\fs89}have
+Dialogue: 0,0:00:12.56,0:00:12.82,Default,,0,0,0,,{\pos(672,378)}{\fnEditor's Note Light\fs89}have\N{\fnEditor's Note Light\fs90}added
+Dialogue: 0,0:00:12.82,0:00:13.20,Default,,0,0,0,,{\pos(672,378)}{\fnEditor's Note Light\fs89}have\N{\fnEditor's Note Light\fs90}added {\fnHelvetica\fs50}a
+Dialogue: 0,0:00:13.20,0:00:13.58,Default,,0,0,0,,{\pos(672,378)}{\fnEditor's Note Light\fs89}have\N{\fnEditor's Note Light\fs90}added {\fnHelvetica\fs50}a {\fnHelvetica\fs62}new
+Dialogue: 0,0:00:13.58,0:00:13.94,Default,,0,0,0,,{\pos(672,378)}{\fnEditor's Note Light\fs89}have\N{\fnEditor's Note Light\fs90}added {\fnHelvetica\fs50}a {\fnHelvetica\fs62}new\N{\fnEditor's Note Light\fs77}type
+Dialogue: 0,0:00:13.94,0:00:14.18,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs50}of
+Dialogue: 0,0:00:14.18,0:00:14.54,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs50}of\N{\fnHelvetica\fs63}font
+Dialogue: 0,0:00:14.54,0:00:14.88,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs50}of\N{\fnHelvetica\fs63}font {\fnHelvetica\fs60}for
+Dialogue: 0,0:00:14.88,0:00:15.20,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs50}of\N{\fnHelvetica\fs63}font {\fnHelvetica\fs60}for\N{\fnHelvetica\fs65}whenever
+Dialogue: 0,0:00:15.20,0:00:15.46,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs50}of\N{\fnHelvetica\fs63}font {\fnHelvetica\fs60}for\N{\fnHelvetica\fs65}whenever\N{\fnEditor's Note Light\fs90}I
+Dialogue: 0,0:00:15.46,0:00:15.58,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs61}am
+Dialogue: 0,0:00:15.58,0:00:16.20,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs61}am\N{\fnEditor's Note Light\fs90}stressing
+Dialogue: 0,0:00:16.20,0:00:16.62,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs61}am\N{\fnEditor's Note Light\fs90}stressing {\fnHelvetica\fs60}on
+Dialogue: 0,0:00:16.62,0:00:16.80,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs61}am\N{\fnEditor's Note Light\fs90}stressing {\fnHelvetica\fs60}on {\fnHelvetica\fs57}the
+Dialogue: 0,0:00:16.80,0:00:17.18,Default,,0,0,0,,{\pos(672,378)}{\fnHelvetica\fs61}am\N{\fnEditor's Note Light\fs90}stressing {\fnHelvetica\fs60}on {\fnHelvetica\fs57}the\N{\fnHelvetica\fs50}words.

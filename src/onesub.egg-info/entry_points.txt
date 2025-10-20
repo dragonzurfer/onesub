@@ -1,0 +1,3 @@
+[console_scripts]
+onesub-prepare = onesub.tasks.prepare:main
+onesub-render = onesub.tasks.render:main
