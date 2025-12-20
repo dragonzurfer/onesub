@@ -16,6 +16,48 @@ logger = logging.getLogger(__name__)
 _FS_PATTERN = re.compile(r"\\fs(\d+)")
 
 
+def _normalize_hex_color(value: str, fallback: str) -> str:
+    candidate = value.strip() if value else ""
+    if not candidate:
+        candidate = fallback
+    if not candidate.startswith("#"):
+        candidate = f"#{candidate}"
+    if len(candidate) != 7:
+        return fallback.upper()
+    hex_part = candidate[1:]
+    if not all(ch in "0123456789ABCDEFabcdef" for ch in hex_part):
+        return fallback.upper()
+    return f"#{hex_part.upper()}"
+
+
+def _hex_to_ass_bgr(color: str) -> str:
+    normalized = _normalize_hex_color(color, "#FFFFFF")
+    r = normalized[1:3]
+    g = normalized[3:5]
+    b = normalized[5:7]
+    return f"&H{b}{g}{r}&"
+
+
+def _hex_to_style_color(color: str) -> str:
+    normalized = _normalize_hex_color(color, "#FFFFFF")
+    r = normalized[1:3]
+    g = normalized[3:5]
+    b = normalized[5:7]
+    return f"&H00{b}{g}{r}"
+
+
+def _ass_primary_tag(color: str) -> str:
+    return rf"\\c{_hex_to_ass_bgr(color)}"
+
+
+def _ass_outline_tag(color: str) -> str:
+    return rf"\\3c{_hex_to_ass_bgr(color)}"
+
+
+def _ass_shadow_tag(color: str) -> str:
+    return rf"\\4c{_hex_to_ass_bgr(color)}"
+
+
 def _format_timestamp(seconds: float) -> str:
     centiseconds = max(0, int(round(seconds * 100)))
     cs = centiseconds % 100
@@ -31,7 +73,16 @@ def _escape_ass_text(text: str) -> str:
     return text.replace("\\", r"\\").replace("{", r"\{").replace("}", r"\}")
 
 
-def _word_markup(word: WordTiming, dynamics: WordDynamics, config: RenderConfig, rms_min: float, rms_max: float) -> str:
+def _word_markup(
+    word: WordTiming,
+    dynamics: WordDynamics,
+    config: RenderConfig,
+    rms_min: float,
+    rms_max: float,
+    primary_tag: str,
+    outline_tag: str,
+    shadow_tag: str,
+) -> str:
     if rms_max <= rms_min:
         normalized = 0.5
     else:
@@ -42,7 +93,7 @@ def _word_markup(word: WordTiming, dynamics: WordDynamics, config: RenderConfig,
     size = config.size_mapping.clamp(config.size_mapping.min_size + normalized * target_span)
     font = config.choose_font(size)
     escaped_text = _escape_ass_text(word.text)
-    return rf"{{\fn{font}\fs{int(round(size))}}}{escaped_text}"
+    return rf"{{\fn{font}\fs{int(round(size))}{primary_tag}{outline_tag}{shadow_tag}}}{escaped_text}"
 
 
 @dataclass
@@ -70,6 +121,14 @@ class Placement:
 class WordRender:
     markup: str
     size: float
+
+
+@dataclass(frozen=True)
+class SegmentColor:
+    start: float
+    end: float
+    color: str
+    shadow: str
 
 
 def _format_caption_text(
@@ -135,6 +194,9 @@ def build_ass_script(
 
     width, height = play_res
     placements = _load_placements(config, play_res)
+    colors = _load_color_overrides(config)
+    primary_style_color = _hex_to_style_color(config.font_color)
+    outline_style_color = _hex_to_style_color(config.shadow_color)
     header = "\n".join(
         [
             "[Script Info]",
@@ -149,8 +211,8 @@ def build_ass_script(
             "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, "
             "Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, "
             "Alignment, MarginL, MarginR, MarginV, Encoding",
-            f"Style: Default,{config.default_font},{int(config.size_mapping.min_size)},&H00FFFFFF,&H000000FF,"
-            f"&H00000000,&H64000000,-1,0,0,0,100,100,0,0,1,{config.outline},{config.shadow},{config.alignment},80,80,80,1",
+            f"Style: Default,{config.default_font},{int(config.size_mapping.min_size)},{primary_style_color},&H000000FF,"
+            f"{outline_style_color},&H64000000,-1,0,0,0,100,100,0,0,1,{config.outline},{config.shadow},{config.alignment},80,80,80,1",
             "",
             "[Events]",
             "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",
@@ -167,6 +229,9 @@ def build_ass_script(
         global_min,
         global_max,
         placements,
+        colors,
+        config.font_color,
+        config.shadow_color,
     )
 
     for entry in dialogue_entries:
@@ -316,6 +381,9 @@ def _build_dialogue_entries(
     global_min: float,
     global_max: float,
     placements: List[Placement],
+    color_overrides: List[SegmentColor],
+    default_color: str,
+    default_shadow: str,
 ) -> List[DialogueEntry]:
     entries: List[DialogueEntry] = []
     reveal_mode = config.display.reveal_mode
@@ -328,6 +396,9 @@ def _build_dialogue_entries(
             config,
             global_min,
             global_max,
+            color_overrides,
+            default_color,
+            default_shadow,
         )
         if reveal_mode == "per_word":
             entries.extend(_dialogues_per_word(line_data, word_infos, line_limits, placements))
@@ -356,10 +427,19 @@ def _dialogues_per_word(
     entries: List[DialogueEntry] = []
     total = len(words)
 
-    cumulative: List[WordTiming] = []
+    visible_words: List[WordTiming] = []
+    last_position: Optional[Tuple[int, int]] = None
+
     for idx, word in enumerate(words):
-        cumulative.append(word)
-        text = _format_caption_text(cumulative, word_infos, line_limits)
+        placement = _placement_for_time(placements, max(line_data.start, word.start))
+        current_position = (placement.x, placement.y)
+
+        if last_position != current_position:
+            visible_words = [word]
+        else:
+            visible_words.append(word)
+
+        text = _format_caption_text(visible_words, word_infos, line_limits)
         if not text:
             continue
         start = max(line_data.start, word.start)
@@ -371,9 +451,9 @@ def _dialogues_per_word(
             boundary = max(line_data.end, word.end)
             end_candidate = boundary
         end = max(start + 0.01, end_candidate)
-        placement = _placement_for_time(placements, start)
         positioned = _apply_position(text, placement)
         entries.append(DialogueEntry(start=start, end=end, text=positioned))
+        last_position = current_position
 
     return entries
 
@@ -384,6 +464,9 @@ def _compute_line_markups(
     config: RenderConfig,
     global_min: float,
     global_max: float,
+    color_overrides: List[SegmentColor],
+    default_color: str,
+    default_shadow: str,
 ) -> Dict[int, WordRender]:
     values: List[float] = []
     for word in line_data.words:
@@ -399,25 +482,47 @@ def _compute_line_markups(
 
     for word in line_data.words:
         dynamics = dynamics_map.get(word.index)
+        primary_hex, shadow_hex = _color_for_time(color_overrides, word.start, default_color, default_shadow)
+        primary_tag = _ass_primary_tag(primary_hex)
+        outline_tag = _ass_outline_tag(shadow_hex)
+        shadow_tag = _ass_shadow_tag(shadow_hex)
         if dynamics:
             if use_local:
-                markup = _word_markup(word, dynamics, config, rms_min=local_min, rms_max=local_max)
+                markup = _word_markup(
+                    word,
+                    dynamics,
+                    config,
+                    rms_min=local_min,
+                    rms_max=local_max,
+                    primary_tag=primary_tag,
+                    outline_tag=outline_tag,
+                    shadow_tag=shadow_tag,
+                )
             else:
-                markup = _word_markup(word, dynamics, config, rms_min=global_min, rms_max=global_max)
+                markup = _word_markup(
+                    word,
+                    dynamics,
+                    config,
+                    rms_min=global_min,
+                    rms_max=global_max,
+                    primary_tag=primary_tag,
+                    outline_tag=outline_tag,
+                    shadow_tag=shadow_tag,
+                )
             size = _extract_size_from_markup(markup, config)
             word_infos[word.index] = WordRender(markup=markup, size=size)
         else:
-            markup = _fallback_markup(word, config)
+            markup = _fallback_markup(word, config, primary_tag, outline_tag, shadow_tag)
             size = _extract_size_from_markup(markup, config)
             word_infos[word.index] = WordRender(markup=markup, size=size)
 
     return word_infos
 
 
-def _fallback_markup(word: WordTiming, config: RenderConfig) -> str:
+def _fallback_markup(word: WordTiming, config: RenderConfig, primary_tag: str, outline_tag: str, shadow_tag: str) -> str:
     escaped_text = _escape_ass_text(word.text)
     size = int(round(config.size_mapping.min_size))
-    return rf"{{\fn{config.default_font}\fs{size}}}{escaped_text}"
+    return rf"{{\fn{config.default_font}\fs{size}{primary_tag}{outline_tag}{shadow_tag}}}{escaped_text}"
 
 
 def _extract_size_from_markup(markup: str, config: RenderConfig) -> float:
@@ -483,6 +588,58 @@ def _load_placements(config: RenderConfig, play_res: Tuple[int, int]) -> List[Pl
     if not placements or placements[-1].end != float("inf"):
         placements.append(Placement(end=float("inf"), x=width // 2, y=height // 2))
     return placements
+
+
+def _load_color_overrides(config: RenderConfig) -> List[SegmentColor]:
+    if not config.colors_path:
+        return []
+
+    try:
+        payload = json.loads(config.colors_path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        logger.warning("Colors file not found: %s", config.colors_path)
+        return []
+    except json.JSONDecodeError as exc:
+        logger.warning("Failed to parse colors file %s: %s", config.colors_path, exc)
+        return []
+
+    entries = payload.get("colors") if isinstance(payload, dict) else None
+    if not isinstance(entries, list):
+        logger.warning("Colors file %s must contain a list under 'colors'", config.colors_path)
+        return []
+
+    overrides: List[SegmentColor] = []
+    for item in entries:
+        if not isinstance(item, dict):
+            continue
+        try:
+            start = float(item.get("start"))
+            end = float(item.get("end"))
+        except (TypeError, ValueError):
+            continue
+        if end <= start:
+            continue
+        color_hex = _normalize_hex_color(str(item.get("color", config.font_color)), config.font_color)
+        shadow_hex = _normalize_hex_color(str(item.get("shadow", config.shadow_color)), config.shadow_color)
+        overrides.append(SegmentColor(start=start, end=end, color=color_hex, shadow=shadow_hex))
+
+    overrides.sort(key=lambda entry: entry.start)
+    return overrides
+
+
+def _color_for_time(
+    overrides: List[SegmentColor],
+    timestamp: float,
+    default_color: str,
+    default_shadow: str,
+) -> tuple[str, str]:
+    for entry in overrides:
+        if entry.start <= timestamp <= entry.end:
+            return entry.color, entry.shadow
+    return (
+        _normalize_hex_color(default_color, default_color),
+        _normalize_hex_color(default_shadow, default_shadow),
+    )
 
 
 def _resolve_position(value: Optional[object], dimension: int, allow_unit: bool = True) -> Optional[int]:

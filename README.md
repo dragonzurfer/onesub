@@ -226,14 +226,26 @@ Place each caption at specific screen coordinates by creating a placements file 
 }
 ```
 
-- `end`: timestamp (seconds) through which this placement remains active.
-- `width` / `height`: normalised offsets (`0.0`–`1.0`) relative to the video dimensions. You can also specify absolute pixels via `x_px` / `y_px`, or percentages like `"40%"`.
-
-The coordinates target the caption's top-left corner (matching the default `alignment` of `7`). Captions fall back to the video centre whenever no placement rule applies.
 
 ## Testing the Render Stage
 
 Transcription can take time, so the rendering code is modular for isolated testing. You can import `onesub.rendering.build_ass_script` in a Python REPL, feed it the JSON payloads, and inspect the generated ASS text without running `ffmpeg`.
+
+## Web Studio Preview
+
+An experimental Next.js workspace lives in `src/onesub-app` for interactive editing.
+
+```bash
+cd src/onesub-app
+pnpm install   # or npm install / yarn
+pnpm dev
+```
+
+Features include video upload, timeline editing, styling controls, and live overlay previews. Export the resulting JSON to feed the CLI workflow when ready.
+
+Set the backend endpoint via `NEXT_PUBLIC_ONESUB_API` (defaults to `http://localhost:8080`). The Go service in `src/onesub-app/backend` exposes `/api/upload`, `/api/render`, and `/api/media` for the UI; run it with `go run main.go` after building the CLI binaries so it can execute `onesub-prepare` / `onesub-render`. Back-end configuration is loaded from environment variables (optionally via a `.env` file or `ONESUB_ENV_FILE`) so you can point to a venv (`ONESUB_PYTHON_VENV`), add the repo to the Python path (`ONESUB_PYTHONPATH`, defaulting to `<ONESUB_CLI_WORKDIR>/src`), and set the project root (`ONESUB_CLI_WORKDIR`). If `ONESUB_PYTHON_VENV` is provided, the backend will refuse to fall back to the system Python, helping you catch misconfigured virtualenvs early.
+
+Click any caption in the timeline to move the playhead and open colour pickers for that window. You can assign per-caption font colours and shadow colours; the preview updates live, and the renderer applies those overrides automatically.
 
 ## Project Layout
 
@@ -242,3 +254,4 @@ Transcription can take time, so the rendering code is modular for isolated testi
 - `src/onesub/rendering.py`: caption grouping, ASS generation, and ffmpeg bridge.
 - `src/onesub/tasks/prepare.py` / `render.py`: CLI entry points.
 - `config/`: example styling, window, and placement configuration files.
+- `src/onesub-app`: Next.js web studio for uploading media, editing timelines, adjusting styling, and previewing placements before rendering.

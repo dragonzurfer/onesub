@@ -20,6 +20,7 @@ This document explains the architecture, modules, and key functions that power t
    - [Rendering CLI (`src/onesub/tasks/render.py`)](#render-task)
 5. [Supporting Assets](#supporting-assets)
 6. [Extensibility Notes](#extensibility-notes)
+7. [Web Studio (`src/onesub-app`)](#web-studio)
 
 ---
 
@@ -194,6 +195,7 @@ Outputs: rendered video at `--output` plus a sibling `.ass` file.
 - `config/example_windows.json`: Sample manual-window JSON.
 - `config/example_placements.json`: Sample time-based placement file.
 - `README.md`: end-user instructions; cross-reference with this developer guide when making changes to CLI behaviour.
+- `src/onesub-app`: Interactive web studio (see [Web Studio](#web-studio)).
 
 [Back to top](#top)
 
@@ -206,5 +208,36 @@ Outputs: rendered video at `--output` plus a sibling `.ass` file.
 - **Rendering**: New grouping modes can be added in `_build_caption_lines`; be sure to update DisplayConfig defaults and documentation. For custom styling tokens, extend `_word_markup` and maintain `_extract_size_from_markup`.
 - **Placement rules**: `_load_placements` supports mixed percentage and pixel values; extend schema as needed (e.g. rotations) and update `RenderConfig` to parse new fields.
 - **Testing**: Each module is importable; embed sample JSON fixtures under `tests/` to validate new features without running Whisper or ffmpeg during unit tests.
+
+[Back to top](#top)
+
+---
+
+## Web Studio
+
+The `src/onesub-app` package contains a Next.js 14 application for previewing and fine-tuning subtitles before invoking the CLI renderer.
+
+### Stack
+
+- Next.js 14 (App Router)
+- React 18 with client components
+- Tailwind CSS for styling
+- Zustand for client state
+
+### Structure
+
+- `app/page.tsx`: Orchestrates the workspace — media upload/player, overlay preview, settings, and timeline editor.
+- `components/VideoPlayer.tsx`: Upload control and HTML5 video element with overlay slot.
+- `components/PreviewOverlay.tsx`: Displays a simulated subtitle overlay based on current playback time and loudness-driven sizing.
+- `components/TimelineEditor.tsx`: Provides a basic timeline to edit caption windows/text; use as a foundation for custom window editors.
+- `components/SettingsPanel.tsx`: Mirrors render configuration options (size mapping, reveal mode, grouping strategies, alignment).
+- `components/sampleData.ts`: Stub transcript/analysis data until backend endpoints are integrated.
+- `styles/globals.css`, `tailwind.config.ts`: styling configuration.
+
+### Integration Notes
+
+- Replace the sample data module with API calls that fetch `captions.json`, `audio_analysis.json`, and `word_timings.json` produced by `onesub-prepare`.
+- Provide export actions that emit updated manual windows, placements, and display configuration JSON for `onesub-render`.
+- Add backend endpoints (Next.js route handlers or Python services) to trigger transcription/render jobs directly from the UI if desired.
 
 [Back to top](#top)

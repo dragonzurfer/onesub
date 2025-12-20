@@ -158,6 +158,7 @@ class RenderConfig:
                 resolved = raw_path.resolve()
             placements_path = resolved
 
+
         return cls(
             size_mapping=size_mapping,
             font_bands=font_bands,
@@ -186,3 +187,16 @@ def _load_windows_file(path: Path) -> dict:
         return json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
         raise ValueError(f"Failed to parse windows file {path}: {exc}") from exc
+
+(value: object, fallback: str) -> str:
+    candidate = str(value).strip() if value is not None else ""
+    if not candidate:
+        candidate = fallback
+    if not candidate.startswith("#"):
+        candidate = f"#{candidate}"
+    if len(candidate) != 7:
+        return fallback.upper()
+    hex_part = candidate[1:]
+    if not all(ch in "0123456789ABCDEFabcdef" for ch in hex_part):
+        return fallback.upper()
+    return f"#{hex_part.upper()}"
