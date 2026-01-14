@@ -5,4 +5,5 @@
 *.mp3
 .DS_Store
 .next
-node_modulessrc/onesub-app/backend/.env
+node_modules
+src/onesub-app/backend/.env

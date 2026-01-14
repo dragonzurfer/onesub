@@ -688,10 +688,6 @@ export default function Page() {
 
   const handleSegmentSelect = useCallback(
     (segment: TimelineSegment, isMulti: boolean) => {
-      const videoEl = videoRef.current;
-      if (videoEl) {
-        videoEl.currentTime = Math.max(0, Math.min(segment.start, Number.isFinite(videoEl.duration) ? videoEl.duration : segment.start));
-      }
       setActiveSegmentId(segment.id);
       setSelectedSegmentIds((prev) => {
         if (!isMulti) {
@@ -934,6 +930,7 @@ export default function Page() {
                   onPlacementChange={handlePlacementChange}
                   onSizeChange={handleSegmentSizeChange}
                   onActiveSegmentChange={setActiveSegmentId}
+                  onSegmentSelect={handleSegmentSelect}
                 />
               }
             />
@@ -950,7 +947,7 @@ export default function Page() {
             <div className="mb-4">
               <h2 className="text-lg font-semibold">Timeline &amp; Windows</h2>
               <p className="text-sm text-slate-400">
-                Click a caption below to move the playhead, then adjust placements directly on the preview.
+                Click the timeline background to move the playhead, then adjust placements directly on the preview.
               </p>
             </div>
             <TimelineEditor

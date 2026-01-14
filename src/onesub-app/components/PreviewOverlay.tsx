@@ -46,6 +46,7 @@ interface PreviewOverlayProps {
   onPlacementChange(segmentId: number, placement: Placement): void;
   onSizeChange(segmentId: number, sizeMin: number, sizeMax: number): void;
   onActiveSegmentChange?(segmentId: number | null): void;
+  onSegmentSelect?(segment: SegmentWithWords, isMulti: boolean): void;
 }
 
 const DEFAULT_PLACEMENT: Placement = { x: 0.5, y: 0.82 };
@@ -72,6 +73,7 @@ export function PreviewOverlay({
   onPlacementChange,
   onSizeChange,
   onActiveSegmentChange,
+  onSegmentSelect,
 }: PreviewOverlayProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
@@ -394,24 +396,25 @@ export function PreviewOverlay({
     [segmentOverrides, settings.sizeMax, settings.sizeMin]
   );
 
-  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>, segmentId: number) => {
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>, segment: SegmentWithWords) => {
     if (!containerRef.current) {
       return;
     }
     event.preventDefault();
     event.stopPropagation();
-    onActiveSegmentChange?.(segmentId);
+    onActiveSegmentChange?.(segment.id);
+    onSegmentSelect?.(segment, event.metaKey || event.ctrlKey);
 
     if (event.metaKey) {
       event.stopPropagation();
-      const { min, max } = getEffectiveSize(segmentId);
+      const { min, max } = getEffectiveSize(segment.id);
       resizeRef.current = {
-        segmentId,
+        segmentId: segment.id,
         startY: event.clientY,
         startMin: min,
         startMax: max,
       };
-      setDraggingSegmentId(segmentId);
+      setDraggingSegmentId(segment.id);
 
       const endResize = () => {
         if (!resizeRef.current) {
@@ -443,7 +446,7 @@ export function PreviewOverlay({
           nextMax = nextMin;
         }
 
-        onSizeChange(segmentId, nextMin, nextMax);
+        onSizeChange(segment.id, nextMin, nextMax);
       };
 
       const handleResizeUp = () => {
@@ -472,11 +475,11 @@ export function PreviewOverlay({
       const yRaw = (clientY - rect.top - box.top) / box.height;
       const x = Math.min(Math.max(xRaw, 0.02), 0.98);
       const y = Math.min(Math.max(yRaw, 0.02), 0.98);
-      onPlacementChange(segmentId, { x, y });
+      onPlacementChange(segment.id, { x, y });
     };
 
     updatePlacement(event.clientX, event.clientY);
-    setDraggingSegmentId(segmentId);
+    setDraggingSegmentId(segment.id);
 
     const handleMove = (moveEvent: PointerEvent) => {
       updatePlacement(moveEvent.clientX, moveEvent.clientY);
@@ -624,7 +627,7 @@ export function PreviewOverlay({
             key={segment.id}
             className="pointer-events-auto absolute cursor-move select-none"
             style={{ left: `${anchorLeft}px`, top: `${anchorTop}px` }}
-            onPointerDown={(event) => handlePointerDown(event, segment.id)}
+            onPointerDown={(event) => handlePointerDown(event, segment)}
           >
             <span
               className={`absolute inline-flex h-3 w-3 items-center justify-center rounded-full border border-white/60 bg-white/80 text-[8px] text-slate-900 transition ${

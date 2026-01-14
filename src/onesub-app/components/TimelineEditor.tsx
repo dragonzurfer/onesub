@@ -295,7 +295,7 @@ export function TimelineEditor({
         <div>
           <h3 className="text-sm font-semibold text-slate-200">Timeline</h3>
           <p className="text-xs text-slate-500">
-            Click to seek. Cmd/Ctrl+Click to multiselect segments for adjustment.
+            Click the timeline background to seek. Cmd/Ctrl+Click to multiselect segments for adjustment.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400">
