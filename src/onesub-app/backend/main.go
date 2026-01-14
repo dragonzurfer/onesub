@@ -20,10 +20,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var workspaceRoot = filepath.Join(os.TempDir(), "onesub_workspace")
+var workspaceRoot string
 
 func main() {
 	loadEnvFile()
+
+	if root := os.Getenv("ONESUB_WORKSPACE_ROOT"); root != "" {
+		workspaceRoot = root
+	} else {
+		workspaceRoot = filepath.Join(os.TempDir(), "onesub_workspace")
+	}
 
 	if err := os.MkdirAll(workspaceRoot, 0o755); err != nil {
 		log.Fatalf("failed to create workspace: %v", err)
@@ -135,11 +141,12 @@ func handleMedia(c *gin.Context) {
 // --- Render ------------------------------------------------------------------
 
 type renderRequest struct {
-	Token      string            `json:"token"`
-	Settings   renderSettings    `json:"settings"`
-	Segments   []segmentResponse `json:"segments"`
-	Placements []map[string]any  `json:"placements"`
-	OutputName string            `json:"outputName"`
+	Token         string                `json:"token"`
+	Settings      renderSettings        `json:"settings"`
+	Segments      []segmentResponse     `json:"segments"`
+	SegmentStyles []segmentStyleRequest `json:"segmentStyles"`
+	Placements    []map[string]any      `json:"placements"`
+	OutputName    string                `json:"outputName"`
 }
 
 func handleRender(c *gin.Context) {
@@ -165,7 +172,7 @@ func handleRender(c *gin.Context) {
 		return
 	}
 
-	configPath, err := writeRenderConfig(workspace, req.Settings, req.Segments, req.Placements)
+	configPath, err := writeRenderConfig(workspace, req.Settings, req.Segments, req.SegmentStyles, req.Placements)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -313,6 +320,7 @@ type segmentResponse struct {
 	End   float64        `json:"end"`
 	Text  string         `json:"text"`
 	Words []wordResponse `json:"words"`
+	WordIDs []int        `json:"wordIds,omitempty"`
 }
 
 type wordResponse struct {
@@ -324,18 +332,22 @@ type wordResponse struct {
 }
 
 type transcriptFile struct {
-	Segments []struct {
-		Index int     `json:"index"`
-		Start float64 `json:"start"`
-		End   float64 `json:"end"`
-		Text  string  `json:"text"`
-		Words []struct {
-			Index int     `json:"index"`
-			Text  string  `json:"text"`
-			Start float64 `json:"start"`
-			End   float64 `json:"end"`
-		} `json:"words"`
-	} `json:"segments"`
+	Segments []transcriptSegment `json:"segments"`
+}
+
+type transcriptSegment struct {
+	Index int              `json:"index"`
+	Start float64          `json:"start"`
+	End   float64          `json:"end"`
+	Text  string           `json:"text"`
+	Words []transcriptWord `json:"words"`
+}
+
+type transcriptWord struct {
+	Index int     `json:"index"`
+	Text  string  `json:"text"`
+	Start float64 `json:"start"`
+	End   float64 `json:"end"`
 }
 
 type analysisFile struct {
@@ -369,11 +381,39 @@ type renderSettings struct {
 	RollingWindow   int        `json:"rollingWindow"`
 	Alignment       int        `json:"alignment"`
 	DefaultFont     string     `json:"defaultFont"`
+	FontStyle       string     `json:"fontStyle"`
 	FontBands       []fontBand `json:"fontBands"`
 	Outline         float64    `json:"outline"`
 	Shadow          float64    `json:"shadow"`
 	LineSpacing     float64    `json:"lineSpacing"`
+	LetterSpacing   float64    `json:"letterSpacing"`
+	WordSpacing     float64    `json:"wordSpacing"`
+	FontColor       string     `json:"fontColor"`
+	ShadowColor     string     `json:"shadowColor"`
 	LineWordLimits  []int      `json:"lineWordLimits"`
+	VideoWidth      float64    `json:"videoWidth"`
+	VideoHeight     float64    `json:"videoHeight"`
+}
+
+type segmentStyleRequest struct {
+	ID            int               `json:"id"`
+	Start         float64           `json:"start"`
+	End           float64           `json:"end"`
+	SizeMin       *float64          `json:"sizeMin"`
+	SizeMax       *float64          `json:"sizeMax"`
+	LetterSpacing *float64          `json:"letterSpacing"`
+	WordSpacing   *float64          `json:"wordSpacing"`
+	LineSpacing   *float64          `json:"lineSpacing"`
+	Font          string            `json:"font"`
+	FontStyle     string            `json:"fontStyle"`
+	FontColor     string            `json:"fontColor"`
+	ShadowColor   string            `json:"shadowColor"`
+	WriteOn       []writeOnKeyframe `json:"writeOn"`
+}
+
+type writeOnKeyframe struct {
+	Time  float64 `json:"time"`
+	Value float64 `json:"value"`
 }
 
 type renderResponse struct {
@@ -476,16 +516,63 @@ func updateCaptions(workspace string, segments []segmentResponse) error {
 		textByID[seg.ID] = seg.Text
 	}
 
+	wordTextUpdates := buildWordTextUpdates(segments)
+
 	for i, seg := range tf.Segments {
 		if text, ok := textByID[seg.Index]; ok {
 			tf.Segments[i].Text = text
+		}
+		if len(wordTextUpdates) > 0 && len(seg.Words) > 0 {
+			for j, word := range seg.Words {
+				if updated, ok := wordTextUpdates[word.Index]; ok {
+					tf.Segments[i].Words[j].Text = updated
+				}
+			}
 		}
 	}
 
 	return writeJSON(path, tf)
 }
 
-func writeRenderConfig(workspace string, settings renderSettings, segments []segmentResponse, placements []map[string]any) (string, error) {
+func buildWordTextUpdates(segments []segmentResponse) map[int]string {
+	updates := make(map[int]string)
+	for _, seg := range segments {
+		if len(seg.WordIDs) == 0 {
+			continue
+		}
+		tokens := strings.Fields(seg.Text)
+		if len(tokens) == 0 {
+			for _, id := range seg.WordIDs {
+				updates[id] = ""
+			}
+			continue
+		}
+		if len(tokens) >= len(seg.WordIDs) {
+			lastIndex := len(seg.WordIDs) - 1
+			for i := 0; i < lastIndex; i++ {
+				updates[seg.WordIDs[i]] = tokens[i]
+			}
+			updates[seg.WordIDs[lastIndex]] = strings.Join(tokens[lastIndex:], " ")
+			continue
+		}
+		for i, id := range seg.WordIDs {
+			if i < len(tokens) {
+				updates[id] = tokens[i]
+			} else {
+				updates[id] = ""
+			}
+		}
+	}
+	return updates
+}
+
+func writeRenderConfig(
+	workspace string,
+	settings renderSettings,
+	segments []segmentResponse,
+	segmentStyles []segmentStyleRequest,
+	placements []map[string]any,
+) (string, error) {
 	display := map[string]any{
 		"mode":              settings.Mode,
 		"words_per_caption": settings.WordsPerCaption,
@@ -501,10 +588,15 @@ func writeRenderConfig(workspace string, settings renderSettings, segments []seg
 	if len(segments) > 0 {
 		windows := make([]map[string]any, 0, len(segments))
 		for _, seg := range segments {
-			windows = append(windows, map[string]any{
+			entry := map[string]any{
+				"id":    seg.ID,
 				"start": seg.Start,
 				"end":   seg.End,
-			})
+			}
+			if len(seg.WordIDs) > 0 {
+				entry["word_ids"] = seg.WordIDs
+			}
+			windows = append(windows, entry)
 		}
 		windowsPath := filepath.Join(workspace, "manual_windows.json")
 		if err := writeJSON(windowsPath, map[string]any{"windows": windows}); err != nil {
@@ -532,28 +624,29 @@ func writeRenderConfig(workspace string, settings renderSettings, segments []seg
 
 	config := map[string]any{
 		"default_font": defaultFont,
+		"font_style":   normalizeFontStyle(settings.FontStyle),
 		"size_mapping": map[string]any{
 			"min": settings.SizeMin,
 			"max": settings.SizeMax,
 		},
-		"display":   display,
-		"alignment": settings.Alignment,
+		"display":        display,
+		"alignment":      settings.Alignment,
+		"outline":        settings.Outline,
+		"shadow":         settings.Shadow,
+		"line_spacing":   settings.LineSpacing,
+		"letter_spacing": settings.LetterSpacing,
+		"word_spacing":   settings.WordSpacing,
+		"font_color":     normalizeHexColor(settings.FontColor, "#FFFFFF"),
+		"shadow_color":   normalizeHexColor(settings.ShadowColor, "#000000"),
+	}
+
+	if settings.VideoWidth > 0 && settings.VideoHeight > 0 {
+		config["play_res_x"] = int(settings.VideoWidth + 0.5)
+		config["play_res_y"] = int(settings.VideoHeight + 0.5)
 	}
 
 	if len(fontBands) > 0 {
 		config["font_bands"] = fontBands
-	}
-
-	if settings.Outline != 0 {
-		config["outline"] = settings.Outline
-	}
-
-	if settings.Shadow != 0 {
-		config["shadow"] = settings.Shadow
-	}
-
-	if settings.LineSpacing != 0 {
-		config["line_spacing"] = settings.LineSpacing
 	}
 
 	if len(placements) > 0 {
@@ -562,6 +655,82 @@ func writeRenderConfig(workspace string, settings renderSettings, segments []seg
 			return "", err
 		}
 		config["placements_path"] = placementsPath
+	}
+
+	if len(segmentStyles) > 0 {
+		styles := make([]map[string]any, 0, len(segmentStyles))
+		for _, style := range segmentStyles {
+			entry := map[string]any{
+				"id":    style.ID,
+				"start": style.Start,
+				"end":   style.End,
+			}
+			hasOverride := false
+			if style.SizeMin != nil {
+				entry["size_min"] = *style.SizeMin
+				hasOverride = true
+			}
+			if style.SizeMax != nil {
+				entry["size_max"] = *style.SizeMax
+				hasOverride = true
+			}
+			if style.LetterSpacing != nil {
+				entry["letter_spacing"] = *style.LetterSpacing
+				hasOverride = true
+			}
+			if style.WordSpacing != nil {
+				entry["word_spacing"] = *style.WordSpacing
+				hasOverride = true
+			}
+			if style.LineSpacing != nil {
+				entry["line_spacing"] = *style.LineSpacing
+				hasOverride = true
+			}
+			if style.Font != "" {
+				entry["font"] = style.Font
+				hasOverride = true
+			}
+			if style.FontStyle != "" {
+				entry["font_style"] = normalizeFontStyle(style.FontStyle)
+				hasOverride = true
+			}
+			if style.FontColor != "" {
+				entry["font_color"] = normalizeHexColor(style.FontColor, "#FFFFFF")
+				hasOverride = true
+			}
+			if style.ShadowColor != "" {
+				entry["shadow_color"] = normalizeHexColor(style.ShadowColor, "#000000")
+				hasOverride = true
+			}
+			if len(style.WriteOn) > 0 {
+				keyframes := make([]map[string]any, 0, len(style.WriteOn))
+				for _, frame := range style.WriteOn {
+					value := frame.Value
+					if value < 0 {
+						value = 0
+					}
+					if value > 1 {
+						value = 1
+					}
+					keyframes = append(keyframes, map[string]any{
+						"time":  frame.Time,
+						"value": value,
+					})
+				}
+				entry["write_on"] = keyframes
+				hasOverride = true
+			}
+			if hasOverride {
+				styles = append(styles, entry)
+			}
+		}
+		if len(styles) > 0 {
+			stylesPath := filepath.Join(workspace, "segment_styles.json")
+			if err := writeJSON(stylesPath, map[string]any{"segments": styles}); err != nil {
+				return "", err
+			}
+			config["segment_styles_path"] = stylesPath
+		}
 	}
 
 	configPath := filepath.Join(workspace, "render_config.json")
@@ -584,6 +753,36 @@ func handleFonts(c *gin.Context) {
 }
 
 func listAvailableFonts() ([]string, error) {
+	// Try using fc-list first (standard on many systems, installable on others)
+	if out, err := exec.Command("fc-list", ":", "family").Output(); err == nil && len(out) > 0 {
+		seen := map[string]struct{}{}
+		scanner := bufio.NewScanner(strings.NewReader(string(out)))
+		for scanner.Scan() {
+			line := strings.TrimSpace(scanner.Text())
+			if line == "" {
+				continue
+			}
+			// fc-list returns "Family1,Family2,..." for localized names. Take the first.
+			if idx := strings.Index(line, ","); idx > 0 {
+				line = line[:idx]
+			}
+			line = strings.TrimSpace(line)
+			if line != "" {
+				seen[line] = struct{}{}
+			}
+		}
+
+		if len(seen) > 0 {
+			fonts := make([]string, 0, len(seen))
+			for name := range seen {
+				fonts = append(fonts, name)
+			}
+			sort.Strings(fonts)
+			return fonts, nil
+		}
+	}
+
+	// Fallback to manual scan if fc-list is missing or empty
 	paths := fontSearchPaths()
 	seen := map[string]struct{}{}
 
@@ -715,6 +914,23 @@ func normalizeHexColor(value string, fallback string) string {
 		return normalized
 	}
 	return "#FFFFFF"
+}
+
+func normalizeFontStyle(value string) string {
+	normalized := strings.ToLower(strings.TrimSpace(value))
+	normalized = strings.ReplaceAll(normalized, "-", "_")
+	switch normalized {
+	case "regular", "normal":
+		return "regular"
+	case "italic", "oblique":
+		return "italic"
+	case "bold_italic", "italic_bold", "bolditalic", "italicbold":
+		return "bold_italic"
+	case "bold":
+		return "bold"
+	default:
+		return "bold"
+	}
 }
 
 func corsMiddleware() gin.HandlerFunc {

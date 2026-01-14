@@ -1,13 +1,13 @@
 "use client";
 
-import { ChangeEvent, MutableRefObject, ReactNode, useCallback } from "react";
+import { ChangeEvent, MutableRefObject, ReactNode, useCallback, useEffect } from "react";
 
 interface VideoPlayerProps {
   src: string | null;
   onUpload(file: File): void;
   videoRef: MutableRefObject<HTMLVideoElement | null>;
   overlay?: ReactNode;
-  onLoadedMetadata?(duration: number): void;
+  onLoadedMetadata?(duration: number, width: number, height: number): void;
 }
 
 export function VideoPlayer({ src, onUpload, videoRef, overlay, onLoadedMetadata }: VideoPlayerProps) {
@@ -20,6 +20,39 @@ export function VideoPlayer({ src, onUpload, videoRef, overlay, onLoadedMetadata
     },
     [onUpload]
   );
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.code !== "Space" && event.key !== " ") {
+        return;
+      }
+      if (event.repeat) {
+        return;
+      }
+      const target = event.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.tagName === "SELECT" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+      const video = videoRef.current;
+      if (!video) {
+        return;
+      }
+      event.preventDefault();
+      if (video.paused) {
+        void video.play();
+      } else {
+        video.pause();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [videoRef]);
 
   return (
     <div className="rounded-xl border border-slate-800 bg-slate-900/80 p-4 shadow-inner shadow-black/40">
@@ -35,9 +68,18 @@ export function VideoPlayer({ src, onUpload, videoRef, overlay, onLoadedMetadata
             controls
             className="h-full w-full object-contain"
             preload="metadata"
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+            }}
+            onPointerDown={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+            }}
             onLoadedMetadata={(event) => {
               if (onLoadedMetadata) {
-                onLoadedMetadata(event.currentTarget.duration);
+                const video = event.currentTarget;
+                onLoadedMetadata(video.duration, video.videoWidth, video.videoHeight);
               }
             }}
           />
