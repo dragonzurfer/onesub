@@ -3,6 +3,18 @@
 # Get the directory where this script is located
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+# Ensure the Go backend can locate the Python package for the CLI helpers.
+export ONESUB_CLI_WORKDIR="$DIR"
+if [ -z "$ONESUB_PYTHONPATH" ]; then
+    export ONESUB_PYTHONPATH="$DIR/src"
+fi
+if [ -z "$ONESUB_PYTHON_VENV" ]; then
+    export ONESUB_PYTHON_VENV="$DIR/.venv"
+fi
+
+echo "Ensuring Python dependencies are installed..."
+"$DIR/scripts/bootstrap_python_env.sh"
+
 # Function to kill child processes on exit
 cleanup() {
     echo "Stopping servers..."

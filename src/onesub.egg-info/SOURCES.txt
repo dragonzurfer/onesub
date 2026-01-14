@@ -7,6 +7,7 @@ src/onesub/models.py
 src/onesub/rendering.py
 src/onesub/serialization.py
 src/onesub/transcription.py
+src/onesub-app/node_modules/flatted/python/flatted.py
 src/onesub.egg-info/PKG-INFO
 src/onesub.egg-info/SOURCES.txt
 src/onesub.egg-info/dependency_links.txt

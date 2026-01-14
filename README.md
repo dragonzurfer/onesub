@@ -11,6 +11,13 @@ Generate stylised subtitles from `.m4a` / `.mp3` audio and burn them into `.mov`
 ## Set Up the Environment
 
 ```bash
+./scripts/bootstrap_python_env.sh
+source .venv/bin/activate
+```
+
+The bootstrapper creates `.venv`, upgrades `pip`, and performs `pip install -e .`. The `start_onesub.command` launcher runs it automatically, so the Go backend and Python helpers always share the same dependency set. Prefer a fully manual setup? Use the traditional sequence instead:
+
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
